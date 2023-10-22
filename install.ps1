@@ -6,7 +6,13 @@ Configures The `autoexec.cfg` file
 The `install.ps1` script creates a symbolic link between autoexec.cfg in this repository and an autoexec.cfg in the 
 Counter-Strike folder.
 
-Provide the RootCSDir to the `RootCsDir` parameter.
+Provide the root Counter-Strike folder (such as `steam\steamapps\common\Counter-Strike Global Offensive`) to the 
+`RootCsDir` parameter.
+
+Provide the exact path to the folder where the file should be linked to the `CfgDir` parameter.
+
+By default, this script will install the file to the Counter-Strike 2 config folder. To install for Counter-Strike 
+Global Offensive, use the `CSGO` flag.
 
 .EXAMPLE
 ./install.ps1 -RootCSDir 'D:\SteamLibrary\steamapps\common\Counter-Strike Global-Offensive'
@@ -19,7 +25,14 @@ Demonstrates installing `autoexec.cfg` to a Counter-Strike folder on the `D:` dr
 Demonstrates installing `autoexec.cfg` to the default location.
 
 .EXAMPLE
+./install.ps1 -CfgDir 'D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg'
 
+Demonstrates installing `autoexec.cfg` to a custom config location.
+
+.EXAMPLE
+./install.ps1 -CSGO
+
+Demonstrates installing `autoexec.cfg` to the Counter-Strike Global Offensive config folder.
 #>
 [CmdletBinding(DefaultParameterSetName='rootdir')]
 param(
@@ -53,4 +66,4 @@ if (-not (Test-Path -Path $CfgDir -PathType Container)) {
 }
 
 New-Item -Path (Join-Path -Path $CfgDir -ChildPath 'autoexec.cfg') -ItemType SymbolicLink -Value $autoexecPath
-Write-Information -MessageData "Copied ./autoexec.cfg to $($CfgDir)"
+Write-Information -MessageData "Symbolic link created between ``./autoexec.cfg`` and ``${CfgDir}``"
